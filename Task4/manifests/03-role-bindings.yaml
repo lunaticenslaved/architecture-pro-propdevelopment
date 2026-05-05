@@ -1,0 +1,145 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-admin-binding
+subjects:
+  - kind: User
+    name: ib-specialist@propdevelopment.ru
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-viewer-binding
+subjects:
+  - kind: Group
+    name: managers
+    apiGroup: rbac.authorization.k8s.io
+  - kind: Group
+    name: product-owners
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-viewer
+  apiGroup: rbac.authorization.k8s.io
+---
+# ============================================================
+# 4. RoleBinding (по неймспейсам)
+# ============================================================
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devops-binding
+  namespace: dmz-ingress
+subjects:
+  - kind: Group
+    name: devops-dmz
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: devops
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devops-binding
+  namespace: smarthome
+subjects:
+  - kind: Group
+    name: devops-smarthome
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: devops
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devops-binding
+  namespace: tenant-core
+subjects:
+  - kind: Group
+    name: devops-tenant-core
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: devops
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devops-binding
+  namespace: monitoring
+subjects:
+  - kind: Group
+    name: devops-monitoring
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: devops
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-binding
+  namespace: dmz-ingress
+subjects:
+  - kind: Group
+    name: developers-dmz
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-binding
+  namespace: smarthome
+subjects:
+  - kind: Group
+    name: developers-smarthome
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-binding
+  namespace: tenant-core
+subjects:
+  - kind: Group
+    name: developers-tenant-core
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-binding
+  namespace: monitoring
+subjects:
+  - kind: Group
+    name: developers-monitoring
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
