@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-ns
+  labels:
+    name: demo-ns
+---
+# ==================================================
+# === FRONT-END ====================================
+# ==================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: front-end-app
+  namespace: demo-ns
+  labels:
+    app: front-end
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27-alpine
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end-app
+  namespace: demo-ns
+spec:
+  selector:
+    app: front-end
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ==================================================
+# === BACK-END-API =================================
+# ==================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: back-end-api-app
+  namespace: demo-ns
+  labels:
+    app: back-end-api
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27-alpine
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-end-api-app
+  namespace: demo-ns
+spec:
+  selector:
+    app: back-end-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ==================================================
+# === ADMIN-FRONT-END ==============================
+# ==================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: admin-front-end-app
+  namespace: demo-ns
+  labels:
+    app: admin-front-end
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27-alpine
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-front-end-app
+  namespace: demo-ns
+spec:
+  selector:
+    app: admin-front-end
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ==================================================
+# === ADMIN-BACK-END-API ===========================
+# ==================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: admin-back-end-api-app
+  namespace: demo-ns
+  labels:
+    app: admin-back-end-api
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27-alpine
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-back-end-api-app
+  namespace: demo-ns
+spec:
+  selector:
+    app: admin-back-end-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
