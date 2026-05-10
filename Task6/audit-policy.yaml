@@ -1,0 +1,66 @@
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - "RequestReceived"
+rules:
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["serviceaccounts"]
+    namespaces: ["secure-ops"]
+    verbs: ["create", "update", "patch", "delete"]
+  
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+  
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods"]
+    verbs: ["create", "update", "patch"]
+  
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods/exec"]
+    verbs: ["create"]
+  
+  - level: Request
+    nonResourceURLs: ["/apis/authorization.k8s.io/*"]
+    verbs: ["create"]
+  
+  - level: RequestResponse
+    resources:
+      - group: "rbac.authorization.k8s.io"
+        resources: ["rolebindings", "clusterrolebindings"]
+    verbs: ["create", "update", "patch", "delete"]
+  
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["secrets", "pods", "configmaps"]
+    namespaces: ["kube-system"]
+    verbs: ["get", "list", "watch"]
+  
+  - level: RequestResponse
+    resources:
+      - group: "authentication.k8s.io"
+        resources: ["userextras", "user"]
+    verbs: ["impersonate"]
+  
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods"]
+    verbs: ["delete"]
+    resourceNames: ["audit-policy*"]
+  
+  - level: Metadata
+    namespaces: ["secure-ops"]
+  
+  - level: Metadata
+    omitStages:
+      - "RequestReceived"

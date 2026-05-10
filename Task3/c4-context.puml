@@ -1,0 +1,32 @@
+@startuml C4_Context
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Context Diagram: интеграция "Умный дом" и "PropDevelopment"
+
+Person_Ext(guest, "Посетитель", "Запрашивает проезд / проход на территорию ЖК через домофон или шлагбаум")
+
+Person(owner, "Владелец квартиры в ЖК", "Имеет доступ к приложению PropDevelopment")
+
+System_Boundary(house, "Территория ЖК") {
+    System_Ext(sh_intercom, "Домофон", "Включает классическую функцию домофона и возможность автоматического распознавания пользователя по лицу")
+    System_Ext(sh_barrier, "Шлагбаум", "Включает классическую функцию шлагбаума и автоматически открывает доступ, если распознаёт номера автомобилей, которым въезд разрешён")
+}
+
+System(propDev, "Платформа 'PropDevelopment'", "Включает себя мобильное приложение для собственников и сервисы для интеграции с партнёрскими API")
+
+System_Ext(smartHouse, "Платформа 'Умный дом'", "Предоставляет API для интеграции партнёров")
+
+Rel(sh_intercom, smartHouse, "Запрос на открытие двери")
+Rel(sh_barrier, smartHouse, "Запрос на открытие шлагбаума")
+
+Rel(smartHouse, propDev, "Запрос на открытие двери или шлагбаума")
+
+Rel(owner, propDev, "Разрешает открыть дверь или шлагбаум. Настраивает автоматический доступ по биометрии")
+Rel(propDev, smartHouse, "Посылает команды открыть дверь/шлагбаум")
+
+Rel(propDev, owner, "Посылает уведомления о запросах на открытие шлагбаума")
+
+Rel(guest, sh_intercom, "Запрашивает открыть дверь")
+Rel(guest, sh_barrier, "Запрашивает открыть шлагбаум")
+

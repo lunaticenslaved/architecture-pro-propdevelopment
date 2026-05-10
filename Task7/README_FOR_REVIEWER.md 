@@ -1,0 +1,33 @@
+1. Установить Gatekeeper
+
+```
+helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
+helm repo update
+helm install gatekeeper gatekeeper/gatekeeper --namespace gatekeeper-system --create-namespace
+```
+
+2. Создать нейспейс
+```
+kubectl apply -f 01-create-namespace.yaml
+```
+
+3. Применить манифесты для Gatekeeper
+```
+kubectl apply -f gatekeeper/constraint-templates/
+kubectl apply -f gatekeeper/constraints/
+```
+
+4. Выполнить проверки
+```
+sh ./verify/verify-admission.sh
+sh ./verify/validate-security.sh
+```
+
+5. Можно смонтировать audit-log в minikube, чтобы проверить, что gatekeeper учавствует в аудите
+
+6. Можно посмотреть, какие нарушения были в gatekeeper constraints:
+```
+kubectl describe k8snoprivileged no-privileged-containers
+kubectl describe k8snoprivileged no-hostpath-volumes
+kubectl describe k8snoprivileged no-root-containers
+```

@@ -1,0 +1,324 @@
+[
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "RequestResponse",
+    "auditID": "a3a3b3ea-6996-435b-83a2-475453d786d1",
+    "stage": "ResponseComplete",
+    "requestURI": "/api/v1/namespaces/kube-system/secrets?limit=500",
+    "verb": "list",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "secrets",
+      "namespace": "kube-system",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 200
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:45.765139Z",
+    "stageTimestamp": "2026-05-09T15:35:45.768347Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": ""
+    }
+  },
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "RequestResponse",
+    "auditID": "a1d6ca4e-ff64-4aef-a83b-c9da83345e82",
+    "stage": "ResponseComplete",
+    "requestURI": "/api/v1/namespaces/kube-system/secrets?limit=500",
+    "verb": "list",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "impersonatedUser": {
+      "username": "system:serviceaccount:secure-ops:monitoring",
+      "groups": [
+        "system:serviceaccounts",
+        "system:serviceaccounts:secure-ops",
+        "system:authenticated"
+      ]
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "secrets",
+      "namespace": "kube-system",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "status": "Failure",
+      "message": "secrets is forbidden: User \"system:serviceaccount:secure-ops:monitoring\" cannot list resource \"secrets\" in API group \"\" in the namespace \"kube-system\"",
+      "reason": "Forbidden",
+      "details": {
+        "kind": "secrets"
+      },
+      "code": 403
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:45.936951Z",
+    "stageTimestamp": "2026-05-09T15:35:45.937765Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "forbid",
+      "authorization.k8s.io/reason": ""
+    }
+  },
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "RequestResponse",
+    "auditID": "f1e213bd-1226-45a9-9dbf-967b676e4451",
+    "stage": "ResponseComplete",
+    "requestURI": "/api/v1/namespaces/secure-ops/pods?fieldManager=kubectl-client-side-apply&fieldValidation=Strict",
+    "verb": "create",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "pods",
+      "namespace": "secure-ops",
+      "name": "privileged-pod",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 201
+    },
+    "requestObject": {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "privileged-pod",
+        "namespace": "secure-ops",
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"annotations\":{},\"name\":\"privileged-pod\",\"namespace\":\"secure-ops\"},\"spec\":{\"containers\":[{\"command\":[\"sleep\",\"3600\"],\"image\":\"alpine\",\"name\":\"pwn\",\"securityContext\":{\"privileged\":true}}],\"restartPolicy\":\"Never\"}}\n"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "pwn",
+            "image": "alpine",
+            "command": [
+              "sleep",
+              "3600"
+            ],
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "Always",
+            "securityContext": {
+              "privileged": true
+            }
+          }
+        ],
+        "restartPolicy": "Never",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "securityContext": {},
+        "schedulerName": "default-scheduler",
+        "enableServiceLinks": true
+      },
+      "status": {}
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:46.161029Z",
+    "stageTimestamp": "2026-05-09T15:35:46.169208Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": "",
+      "pod-security.kubernetes.io/enforce-policy": "privileged:latest"
+    }
+  },
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "Metadata",
+    "auditID": "de01816a-13a1-4269-a512-4dad70664031",
+    "stage": "ResponseStarted",
+    "requestURI": "/api/v1/namespaces/kube-system/pods/coredns-7d764666f9-l4nh5/exec?command=cat&command=%2Fetc%2Fresolv.conf&container=coredns&stderr=true&stdout=true",
+    "verb": "get",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "pods",
+      "namespace": "kube-system",
+      "name": "coredns-7d764666f9-l4nh5",
+      "apiVersion": "v1",
+      "subresource": "exec"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 101
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:46.501002Z",
+    "stageTimestamp": "2026-05-09T15:35:46.504214Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": ""
+    }
+  },
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "Metadata",
+    "auditID": "de01816a-13a1-4269-a512-4dad70664031",
+    "stage": "ResponseComplete",
+    "requestURI": "/api/v1/namespaces/kube-system/pods/coredns-7d764666f9-l4nh5/exec?command=cat&command=%2Fetc%2Fresolv.conf&container=coredns&stderr=true&stdout=true",
+    "verb": "get",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "pods",
+      "namespace": "kube-system",
+      "name": "coredns-7d764666f9-l4nh5",
+      "apiVersion": "v1",
+      "subresource": "exec"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 101
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:46.501002Z",
+    "stageTimestamp": "2026-05-09T15:35:46.579789Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": ""
+    }
+  },
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "RequestResponse",
+    "auditID": "19d1c7e4-ca80-4a9d-a3ad-b50d0421e8b3",
+    "stage": "ResponseComplete",
+    "requestURI": "/apis/rbac.authorization.k8s.io/v1/namespaces/secure-ops/rolebindings?fieldManager=kubectl-client-side-apply&fieldValidation=Strict",
+    "verb": "create",
+    "user": {
+      "username": "minikube-user",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ],
+      "extra": {
+        "authentication.kubernetes.io/credential-id": [
+          "X509SHA256=0f86917984b64e8fe1e50f3e987592fed7d142396d25f257bdea72c0831d05e6"
+        ]
+      }
+    },
+    "sourceIPs": [
+      "192.168.49.1"
+    ],
+    "userAgent": "kubectl/v1.34.5+k3s1 (linux/amd64) kubernetes/c2661bc",
+    "objectRef": {
+      "resource": "rolebindings",
+      "namespace": "secure-ops",
+      "name": "escalate-binding",
+      "apiGroup": "rbac.authorization.k8s.io",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 201
+    },
+    "requestObject": {
+      "kind": "RoleBinding",
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "metadata": {
+        "name": "escalate-binding",
+        "namespace": "secure-ops",
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"rbac.authorization.k8s.io/v1\",\"kind\":\"RoleBinding\",\"metadata\":{\"annotations\":{},\"name\":\"escalate-binding\",\"namespace\":\"secure-ops\"},\"roleRef\":{\"apiGroup\":\"rbac.authorization.k8s.io\",\"kind\":\"ClusterRole\",\"name\":\"cluster-admin\"},\"subjects\":[{\"kind\":\"ServiceAccount\",\"name\":\"monitoring\",\"namespace\":\"secure-ops\"}]}\n"
+        }
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "monitoring",
+          "namespace": "secure-ops"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "cluster-admin"
+      }
+    },
+    "requestReceivedTimestamp": "2026-05-09T15:35:46.889815Z",
+    "stageTimestamp": "2026-05-09T15:35:46.897705Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": ""
+    }
+  }
+]

@@ -1,0 +1,184 @@
+# ==================================================
+# === ЗАПРЕЩАЕМ ВСЁ ================================
+# ==================================================
+
+# Запрет всего входящего трафика для всех подов
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: demo-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress: []
+
+# Запрет всего исходящего трафика для всех подов
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-egress
+  namespace: demo-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress: []
+
+# ==================================================
+# === CLIENT =======================================
+# ==================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: client-backend-ingress
+  namespace: demo-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: back-end-api
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: front-end
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: client-frontend-ingress
+  namespace: demo-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: front-end
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: back-end-api
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: client-frontend-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: front-end
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: back-end-api
+    ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: client-backend-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: back-end-api
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: front-end
+    ports:
+    - port: 80
+# ==================================================
+# === ADMIN +=======================================
+# ==================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: admin-backend-ingress
+  namespace: demo-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: admin-back-end-api
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: admin-front-end
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: admin-frontend-ingress
+  namespace: demo-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: admin-front-end
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: admin-back-end-api
+    ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: admin-frontend-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: admin-front-end
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: admin-back-end-api
+    ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: admin-backend-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: admin-back-end-api
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: admin-front-end
+    ports:
+    - port: 80

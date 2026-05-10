@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: privileged-test-sec
+  namespace: audit-zone
+  labels:
+    test: audit-security
+spec:
+  containers:
+    - name: test
+      image: busybox:latest
+      command: ["sleep", "3600"]
+      securityContext:
+        privileged: false               # Было: true
+        runAsNonRoot: true              # Было: не указано
+        runAsUser: 1000                 # Было: не указано
+        allowPrivilegeEscalation: false # Было: не указано
+        capabilities:
+          drop: ["ALL"]                 # Было: не указано
+        seccompProfile:
+          type: RuntimeDefault          # Было: не указано
+  restartPolicy: Never
